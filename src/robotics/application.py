@@ -20,7 +20,7 @@ class RobotApp():
         self.main_frame.load_resources(self.model)
     
     def run(self):
-        self.model.get_robot().set_destination(31, 23)
+        self.model.get_robot().set_destination(31, 23, self.model.get_world_state())
         while True:
             self.process_events()
             self.main_frame.update()

@@ -23,6 +23,14 @@ class World():
     def get_robot(self):
         return self.robot
     
+    def get_world_state(self):
+        ''' Return 2D array with information about world
+            Transient places are marked with value 1. 
+            Non-transient as -1
+        '''
+        state = []
+        return state
+    
     
 class Robot():
     ''' Robot model
@@ -38,7 +46,8 @@ class Robot():
     def get_position(self):
         return (0, 0)
     
-    def set_destination(self, dest_x, dest_y):
+    def set_destination(self, dest_x, dest_y, world_state):
+        print(world_state)
         self.path = []
         pos = [self.pos_x, self.pos_y]
         while pos[0] < dest_x or pos[1] < dest_y:
