@@ -274,14 +274,14 @@ class TileLayer(object):
     A layer of the world.
 
     :Ivariables:
-        x : int
+        pos_x : int
             position of layer in the world in number of tiles (not pixels)
-        y : int
+        pos_y : int
             position of layer in the world in number of tiles (not pixels)
         width : int
-            number of tiles in x direction
+            number of tiles in pos_x direction
         height : int
-            number of tiles in y direction
+            number of tiles in pos_y direction
         pixel_width : int
             width of layer in pixels
         pixel_height : int
@@ -304,15 +304,15 @@ class TileLayer(object):
 
                 usage: graphics id = decoded_content[tile_x + tile_y * width]
         content2D : list
-            list of list, usage: graphics id = content2D[x][y]
+            list of list, usage: graphics id = content2D[pos_x][pos_y]
 
     """
 
     def __init__(self):
         self.width = 0
         self.height = 0
-        self.x = 0
-        self.y = 0
+        self.pos_x = 0
+        self.pos_y = 0
         self.pixel_width = 0
         self.pixel_height = 0
         self.name = None
@@ -400,8 +400,8 @@ class TileLayer(object):
 
     def convert(self):
         self.opacity = float(self.opacity)
-        self.x = int(self.x)
-        self.y = int(self.y)
+        self.pos_x = int(self.pos_x)
+        self.pos_y = int(self.pos_y)
         self.width = int(self.width)
         self.height = int(self.height)
         self.pixel_width = self.width * self.tilewidth
@@ -438,10 +438,10 @@ class MapObjectGroupLayer(object):
     Group of objects on the map.
 
     :Ivariables:
-        x : int
-            the x position
-        y : int
-            the y position
+        pos_x : int
+            the pos_x position
+        pos_y : int
+            the pos_y position
         width : int
             width of the bounding box (usually 0, so no use)
         height : int
@@ -458,20 +458,20 @@ class MapObjectGroupLayer(object):
         self.height = 0
         self.name = None
         self.objects = []
-        self.x = 0
-        self.y = 0
+        self.pos_x = 0
+        self.pos_y = 0
         self.visible = True
         self.properties = {} # {name: value}
         self.is_object_group = True # ISSUE 9
 
     def convert(self):
-        self.x = int(self.x)
-        self.y = int(self.y)
+        self.pos_x = int(self.pos_x)
+        self.pos_y = int(self.pos_y)
         self.width = int(self.width)
         self.height = int(self.height)
         for map_obj in self.objects:
-            map_obj.x = int(map_obj.x)
-            map_obj.y = int(map_obj.y)
+            map_obj.pos_x = int(map_obj.pos_x)
+            map_obj.pos_y = int(map_obj.pos_y)
             map_obj.width = int(map_obj.width)
             map_obj.height = int(map_obj.height)
 
@@ -482,10 +482,10 @@ class MapObject(object):
     A single object on the map.
 
     :Ivariables:
-        x : int
-            x position relative to group x position
-        y : int
-            y position relative to group y position
+        pos_x : int
+            pos_x position relative to group pos_x position
+        pos_y : int
+            pos_y position relative to group pos_y position
         width : int
             width of this object
         height : int
@@ -499,8 +499,8 @@ class MapObject(object):
     """
     def __init__(self):
         self.name = None
-        self.x = 0
-        self.y = 0
+        self.pos_x = 0
+        self.pos_y = 0
         self.width = 0
         self.height = 0
         self.type = None
@@ -840,8 +840,8 @@ class AbstractResourceLoader(object):
 
             ...
             w, h = image_size
-            for y in xrange(margin, h, tileheight + spacing):
-                for x in xrange(margin, w, tilewidth + spacing):
+            for pos_y in xrange(margin, h, tileheight + spacing):
+                for pos_x in xrange(margin, w, tilewidth + spacing):
                     ...
 
         :rtype: a list of images

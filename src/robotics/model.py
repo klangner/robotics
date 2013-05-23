@@ -28,9 +28,23 @@ class Robot():
     ''' Robot model
     '''
     
+    def __init__(self):
+        self.pos_x, self.pos_y = 0, 0
+        self.path = []
+    
     def get_path(self):
-        path = [[0,0], [0,1], [1,1], [1,2], [1,3]]
-        return path
+        return self.path
     
     def get_position(self):
         return (0, 0)
+    
+    def set_destination(self, dest_x, dest_y):
+        self.path = []
+        pos = [self.pos_x, self.pos_y]
+        while pos[0] < dest_x or pos[1] < dest_y:
+            if dest_x-pos[0] > dest_y-pos[1]:
+                pos = [pos[0]+1, pos[1]]
+            else:
+                pos = [pos[0], pos[1]+1]
+            self.path.append(pos)
+            

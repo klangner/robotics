@@ -191,7 +191,7 @@ class SpriteLayer(object):
             Defines if the sprite lays on the floor or if it is up-right.
 
             :returns:
-                The bottom y coordinate so the sprites can be sorted in right
+                The bottom pos_y coordinate so the sprites can be sorted in right
                 draw order.
             """
             if self.is_flat:
@@ -218,8 +218,8 @@ class SpriteLayer(object):
         self.tileheight = _world_map.tileheight
         self.num_tiles_x = _world_map.width
         self.num_tiles_y = _world_map.height
-        self.position_x = _layer.x
-        self.position_y = _layer.y
+        self.position_x = _layer.pos_x
+        self.position_y = _layer.pos_y
 
 
         self._level = 1
@@ -390,13 +390,13 @@ class SpriteLayer(object):
             if layer.tile_height != tile_height:
                 raise SpriteLayerNotCompatibleError("layers do not have same tile_height")
             if layer.num_tiles_x != num_tiles_x:
-                raise SpriteLayerNotCompatibleError("layers do not have same number of tiles in x direction")
+                raise SpriteLayerNotCompatibleError("layers do not have same number of tiles in pos_x direction")
             if layer.num_tiles_y != num_tiles_y:
-                raise SpriteLayerNotCompatibleError("layers do not have same number of tiles in y direction")
+                raise SpriteLayerNotCompatibleError("layers do not have same number of tiles in pos_y direction")
             if layer.position_x != position_x:
-                raise SpriteLayerNotCompatibleError("layers are not at same position in x")
+                raise SpriteLayerNotCompatibleError("layers are not at same position in pos_x")
             if layer.position_y != position_y:
-                raise SpriteLayerNotCompatibleError("layers are not at same position in y")
+                raise SpriteLayerNotCompatibleError("layers are not at same position in pos_y")
 
             if new_layer is None:
                 new_layer = SpriteLayer(-2, layer._resource_loader)
@@ -511,15 +511,15 @@ class SpriteLayer(object):
 
         :Parameters:
             xpos_new : int
-                x position
+                pos_x position
             ypos_new : int
-                y position
+                pos_y position
             level : int
                 collapse level because this uses original tiles
             num_tiles_x : int
-                number of tiles in x direction
+                number of tiles in pos_x direction
             num_tiles_y : int
-                number of tiles in y direction
+                number of tiles in pos_y direction
         :Returns:
             list of coordinates of the neighbour tiles
         """
@@ -625,7 +625,7 @@ class SpriteLayer(object):
 
         :Parameters:
             coords : list
-                tuples of coordinates (x, y)
+                tuples of coordinates (pos_x, pos_y)
             layer : SpriteLayer
                 the layer to get the united sprite from
             _img_cache : dict
@@ -742,17 +742,17 @@ class SpriteLayer(object):
     def set_layer_paralax_factor(self, factor_x=1.0, factor_y=None):
         """
         Set the paralax factor. This is for paralax scrolling this layer.
-        Values x < 0.0 will make the layer scroll in opposite direction
-        Value x == 0.0 makes the layer fix to the screen (wont scroll)
-        Values 0.0 < x < 1.0 will make scroll the layer slower.
-        Value x == 1.0 is default and make scroll the layer normal.
-        Values x > 1.0 make scroll the layer faster than normal
+        Values pos_x < 0.0 will make the layer scroll in opposite direction
+        Value pos_x == 0.0 makes the layer fix to the screen (wont scroll)
+        Values 0.0 < pos_x < 1.0 will make scroll the layer slower.
+        Value pos_x == 1.0 is default and make scroll the layer normal.
+        Values pos_x > 1.0 make scroll the layer faster than normal
 
         :Parameters:
             factor_x : float
-                Paralax factor in x direction. Defaults to 1.0
+                Paralax factor in pos_x direction. Defaults to 1.0
             factor_y : float
-                Paralax factor in y direction. If this is None then it will have
+                Paralax factor in pos_y direction. If this is None then it will have
                 the same value as the factor_x argument.
         """
         self.paralax_factor_x = factor_x
@@ -763,19 +763,19 @@ class SpriteLayer(object):
 
     def get_layer_paralax_factor_x(self):
         """
-        Retrieve the current x paralax factor.
+        Retrieve the current pos_x paralax factor.
 
         :Returns:
-            returns the current x paralax factor.
+            returns the current pos_x paralax factor.
         """
         return self.paralax_factor_x
 
     def get_layer_paralax_factor_y(self):
         """
-        Retrieve the current y paralax factor.
+        Retrieve the current pos_y paralax factor.
 
         :Returns:
-            returns the current y paralax factor.
+            returns the current pos_y paralax factor.
         """
         return self.paralax_factor_y
 
@@ -830,7 +830,7 @@ class RendererPygame(object):
         while running:
 
             # move camera
-            renderer.set_camera_position(x, y)
+            renderer.set_camera_position(pos_x, pos_y)
 
             # draw layers
             for sprite_layer in sprite_layers:
@@ -852,9 +852,9 @@ class RendererPygame(object):
 
         :Parameters:
             world_pos_x : int
-                position in x in world coordinates
+                position in pos_x in world coordinates
             world_pos_y : int
-                position in y in world coordinates
+                position in pos_y in world coordinates
             alignment : string
                 defines to which part of the cam rect the position belongs,
                 can be any pygame.Rect
@@ -870,9 +870,9 @@ class RendererPygame(object):
 
         :Parameters:
             world_pos_x : int
-                Position in x in world coordinates.
+                Position in pos_x in world coordinates.
             world_pos_y : int
-                Position in y in world coordinates.
+                Position in pos_y in world coordinates.
             witdh : int
                 With of the camera rect (the rendered area).
             height : int
@@ -1045,9 +1045,9 @@ class RendererPygame(object):
             layer : SpriteLayer
                 the layer to pick from
             screen_x : int
-                The screen position in x direction.
+                The screen position in pos_x direction.
             screen_y : int
-                The screen position in y direction.
+                The screen position in pos_y direction.
 
         :Returns:
             None if there is no sprite or the sprite
@@ -1080,9 +1080,9 @@ class RendererPygame(object):
             layer : SpriteLayer
                 the layer to pick from
             screen_x : int
-                The screen position in x direction.
+                The screen position in pos_x direction.
             screen_y : int
-                The screen position in y direction.
+                The screen position in pos_y direction.
 
         :Returns:
             A list of sprites or an empty list.
@@ -1110,17 +1110,17 @@ class RendererPygame(object):
             layer : SpriteLayer
                 the layer to pick from
             screen_x : int
-                The screen position in x direction.
+                The screen position in pos_x direction.
             screen_y : int
-                The screen position in y direction.
+                The screen position in pos_y direction.
 
         :Returns:
             Tuple of world coordinates: (world_x, world_y)
 
         """
-        # TODO: also use layer.x and layer.y offset
-        return (screen_x + self._render_cam_rect.x * layer.paralax_factor_x, \
-                screen_y + self._render_cam_rect.y * layer.paralax_factor_y)
+        # TODO: also use layer.pos_x and layer.pos_y offset
+        return (screen_x + self._render_cam_rect.pos_x * layer.paralax_factor_x, \
+                screen_y + self._render_cam_rect.pos_y * layer.paralax_factor_y)
 
 #  -----------------------------------------------------------------------------
 

@@ -64,6 +64,13 @@ class Canvas():
         y = row*TITLE_HEIGHT+TITLE_HEIGHT/2 
         pygame.draw.circle(self.surface, color, (x, y), radius)
         
+    def draw_path(self, steps):
+        points = []
+        for step in steps:
+            point = [step[0]*TITLE_WIDTH+TITLE_WIDTH/2, step[1]*TITLE_HEIGHT+TITLE_HEIGHT/2]
+            points.append(point)
+        pygame.draw.lines(self.surface, (255,0,0), False, points, 3)
+        
         
 class RobotView():
     ''' Update view based on robot information
@@ -73,9 +80,13 @@ class RobotView():
         self.robot = robot
         
     def draw(self, canvas):
-        for step in self.robot.get_path():
-            canvas.draw_circle(step[0], step[1], (255, 0, 0), 5)
         (robot_x, robot_y) = self.robot.get_position()
         canvas.draw_circle(robot_x, robot_y, (0, 0, 255), 16)
+        points = [[robot_x, robot_y]]
+        points.extend(self.robot.get_path())
+        last_point = points[-1]
+        canvas.draw_circle(last_point[0], last_point[1], (255, 0, 0), 10)
+        canvas.draw_path(points)
+        
         
         
