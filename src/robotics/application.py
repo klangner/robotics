@@ -17,7 +17,7 @@ class RobotApp():
 
     def loadMap(self, map_filename):
         self.model.load(map_filename)
-        self.main_frame.load_resources(self.model.get_map())
+        self.main_frame.load_resources(self.model)
     
     def run(self):
         while True:
