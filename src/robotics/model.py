@@ -5,6 +5,7 @@ Created on 22-05-2013
 '''
 
 from robotics.tiled import tmxreader
+from robotics.slam.pathfinding import astar_path
  
 
 class World():
@@ -29,6 +30,19 @@ class World():
             Non-transient as -1
         '''
         state = []
+        structures_layer = None
+        for layer in self.world_map.layers:
+            if layer.name == 'Structures':
+                structures_layer = layer
+                break
+        for col in structures_layer.content2D:
+            column = []
+            state.append(column)
+            for cell in col:
+                if cell > 0:
+                    column.append(-1)
+                else:
+                    column.append(1)
         return state
     
     
@@ -47,13 +61,9 @@ class Robot():
         return (0, 0)
     
     def set_destination(self, dest_x, dest_y, world_state):
-        print(world_state)
-        self.path = []
-        pos = [self.pos_x, self.pos_y]
-        while pos[0] < dest_x or pos[1] < dest_y:
-            if dest_x-pos[0] > dest_y-pos[1]:
-                pos = [pos[0]+1, pos[1]]
-            else:
-                pos = [pos[0], pos[1]+1]
-            self.path.append(pos)
+        self.world_state = world_state
+        self.path = astar_path(world_state, self.pos_x, self.pos_y, dest_x, dest_y)
+            
+    def get_world_state(self):
+        return self.world_state
             

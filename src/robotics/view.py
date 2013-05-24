@@ -52,6 +52,7 @@ class Canvas():
     
     def __init__(self, surface):
         self.surface = surface
+        self.color = (0, 0, 0)
         
     def get_surface(self):
         return self.surface
@@ -59,17 +60,20 @@ class Canvas():
     def clear(self):
         self.surface.fill((0, 0, 0))
         
-    def draw_circle(self, col, row, color, radius):
+    def draw_circle(self, col, row, radius):
         x = col*TITLE_WIDTH+TITLE_WIDTH/2
         y = row*TITLE_HEIGHT+TITLE_HEIGHT/2 
-        pygame.draw.circle(self.surface, color, (x, y), radius)
+        pygame.draw.circle(self.surface, self.color, (x, y), radius)
         
     def draw_path(self, steps):
         points = []
         for step in steps:
             point = [step[0]*TITLE_WIDTH+TITLE_WIDTH/2, step[1]*TITLE_HEIGHT+TITLE_HEIGHT/2]
             points.append(point)
-        pygame.draw.lines(self.surface, (255,0,0), False, points, 3)
+        pygame.draw.lines(self.surface, self.color, False, points, 3)
+        
+    def set_color(self, color):
+        self.color = color
         
         
 class RobotView():
@@ -80,13 +84,30 @@ class RobotView():
         self.robot = robot
         
     def draw(self, canvas):
+        self._draw_robot(canvas)
+        self._draw_path(canvas)
+        self._draw_world_state(canvas)
+        
+    def _draw_robot(self, canvas):
         (robot_x, robot_y) = self.robot.get_position()
-        canvas.draw_circle(robot_x, robot_y, (0, 0, 255), 16)
+        canvas.set_color((0,0,255))
+        canvas.draw_circle(robot_x, robot_y, 16)
+        
+    def _draw_path(self, canvas):
+        (robot_x, robot_y) = self.robot.get_position()
         points = [[robot_x, robot_y]]
         points.extend(self.robot.get_path())
         last_point = points[-1]
-        canvas.draw_circle(last_point[0], last_point[1], (255, 0, 0), 10)
+        canvas.set_color((255,0,0))
+        canvas.draw_circle(last_point[0], last_point[1], 10)
         canvas.draw_path(points)
         
-        
+    def _draw_world_state(self, canvas):
+        state = self.robot.get_world_state()
+        canvas.set_color((125, 125, 125))
+        for i in range(len(state)):
+            row = state[i]
+            for j in range(len(row)):
+                if row[j] == -1:
+                    canvas.draw_circle(i, j, 10)
         
