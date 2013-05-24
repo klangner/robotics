@@ -5,6 +5,7 @@ Created on 24-05-2013
 '''
 
 
+
 def astar_path(world_map, start_x, start_y, dest_x, dest_y):
     path = []
     pos = [start_x, start_y]

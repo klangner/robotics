@@ -7,6 +7,7 @@ Created on 22-05-2013
 import pygame
 import os
 from robotics.tiled import helperspygame
+from robotics.slam.graph import GraphConverter
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 TITLE_HEIGHT = 32
@@ -85,8 +86,8 @@ class RobotView():
         
     def draw(self, canvas):
         self._draw_robot(canvas)
-        self._draw_path(canvas)
         self._draw_world_state(canvas)
+        self._draw_path(canvas)
         
     def _draw_robot(self, canvas):
         (robot_x, robot_y) = self.robot.get_position()
@@ -105,9 +106,13 @@ class RobotView():
     def _draw_world_state(self, canvas):
         state = self.robot.get_world_state()
         canvas.set_color((125, 125, 125))
-        for i in range(len(state)):
-            row = state[i]
-            for j in range(len(row)):
-                if row[j] == -1:
-                    canvas.draw_circle(i, j, 10)
+        converter = GraphConverter()
+        graph = converter.create_graph(state)
+        for start, end in graph.edges():
+            line = []
+            node = graph.node[start]
+            line.append([node['col'], node['row']])
+            node = graph.node[end]
+            line.append([node['col'], node['row']])
+            canvas.draw_path(line)
         
