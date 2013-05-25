@@ -20,8 +20,10 @@ class RobotApp():
         self.main_frame.load_resources(self.model)
     
     def run(self):
-        self.model.get_robot().set_destination((31, 23), self.model.get_world_state())
-        while True:
+        self.robot = self.model.get_robot() 
+        self.robot.set_destination((31, 23))
+        self.running = True
+        while self.running:
             self.process_events()
             self.main_frame.update()
             
@@ -29,3 +31,14 @@ class RobotApp():
         for event in pygame.event.get():
             if event.type == pygame.QUIT: 
                 sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.running = False
+                elif event.key == pygame.K_UP:
+                    self.robot.move(0, -1)
+                elif event.key == pygame.K_DOWN:
+                    self.robot.move(0, 1)
+                elif event.key == pygame.K_RIGHT:
+                    self.robot.move(1, 0)
+                elif event.key == pygame.K_LEFT:
+                    self.robot.move(-1, 0)

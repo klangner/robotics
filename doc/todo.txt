@@ -2,10 +2,10 @@ Lista zadań do zrobienia
 
 Wersja 1.0 - Algorytm A*
 -------------------------------------------------------------------------------
-* Pokazanie mapy
-* Wstawianie na mapę robota
++ Pokazanie mapy
++ Wstawianie na mapę robota
++ Wyznaczanie i rysowanie ściezki od robota do punktu docelowego
 * Wstawianie na mapę punktu docelowego
-* Wyznaczanie i rysowanie ściezki od robota do punktu docelowego
 * Przemieszczanie robota względem ścieżki
 
 
