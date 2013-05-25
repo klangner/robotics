@@ -51,18 +51,18 @@ class Robot():
     '''
     
     def __init__(self):
-        self.pos_x, self.pos_y = 0, 0
+        self.position =  (0, 0)
         self.path = []
     
     def get_path(self):
         return self.path
     
     def get_position(self):
-        return (0, 0)
+        return self.position
     
-    def set_destination(self, dest_x, dest_y, world_state):
+    def set_destination(self, destination, world_state):
         self.world_state = world_state
-        self.path = astar_path(world_state, self.pos_x, self.pos_y, dest_x, dest_y)
+        self.path = astar_path(world_state, self.position, destination)
             
     def get_world_state(self):
         return self.world_state

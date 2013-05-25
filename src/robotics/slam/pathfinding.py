@@ -3,18 +3,19 @@ Created on 24-05-2013
 
 @author: Krzysztof Langner
 '''
+from robotics.slam.graph import GraphConverter
+import networkx as nx;
 
 
+def astar_path(world_map, start, dest):
+    converter = GraphConverter()
+    graph = converter.create_graph(world_map)
+    nodes = nx.astar_path(graph, start, dest, heuristic)
+    return nodes
 
-def astar_path(world_map, start_x, start_y, dest_x, dest_y):
-    path = []
-    pos = [start_x, start_y]
-    distance = max(dest_x-start_x, dest_y-start_y)
-    for _i in range(distance):
-        pos = pos[:]
-        if pos[0] < dest_x:
-            pos[0] += 1
-        if pos[1] < dest_y:
-            pos[1] += 1
-        path.append(pos)
-    return path
+def heuristic(a, b):
+    (ax, ay) = a
+    (bx, by) = b
+    x = (ax-bx)**2
+    y = (ay-by)**2
+    return float(x+y)**.5

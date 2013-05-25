@@ -7,7 +7,6 @@ Created on 22-05-2013
 import pygame
 import os
 from robotics.tiled import helperspygame
-from robotics.slam.graph import GraphConverter
 
 os.environ['SDL_VIDEO_CENTERED'] = '1'
 TITLE_HEIGHT = 32
@@ -68,8 +67,8 @@ class Canvas():
         
     def draw_path(self, steps):
         points = []
-        for step in steps:
-            point = [step[0]*TITLE_WIDTH+TITLE_WIDTH/2, step[1]*TITLE_HEIGHT+TITLE_HEIGHT/2]
+        for (step_x, step_y) in steps:
+            point = [step_x*TITLE_WIDTH+TITLE_WIDTH/2, step_y*TITLE_HEIGHT+TITLE_HEIGHT/2]
             points.append(point)
         pygame.draw.lines(self.surface, self.color, False, points, 3)
         
@@ -95,8 +94,8 @@ class RobotView():
         canvas.draw_circle(robot_x, robot_y, 16)
         
     def _draw_path(self, canvas):
-        (robot_x, robot_y) = self.robot.get_position()
-        points = [[robot_x, robot_y]]
+        robot_pos = self.robot.get_position()
+        points = [robot_pos]
         points.extend(self.robot.get_path())
         last_point = points[-1]
         canvas.set_color((255,0,0))
@@ -104,15 +103,4 @@ class RobotView():
         canvas.draw_path(points)
         
     def _draw_world_state(self, canvas):
-        state = self.robot.get_world_state()
-        canvas.set_color((125, 125, 125))
-        converter = GraphConverter()
-        graph = converter.create_graph(state)
-        for start, end in graph.edges():
-            line = []
-            node = graph.node[start]
-            line.append([node['col'], node['row']])
-            node = graph.node[end]
-            line.append([node['col'], node['row']])
-            canvas.draw_path(line)
-        
+        pass
