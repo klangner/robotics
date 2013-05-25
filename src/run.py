@@ -3,7 +3,7 @@ Created on 22-05-2013
 
 @author: Krzysztof Langner
 '''
-from robotics.application import RobotApp
+from robotics.robot1.application import RobotApp
 import os.path
 
 RESOURCES_PATH = os.path.dirname(__file__) + '/resources/'

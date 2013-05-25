@@ -15,6 +15,9 @@ class World():
     def load(self, map_filename):
         self.world_map = tmxreader.TileMapParser().parse_decode(map_filename)
         self.robot = Robot(self.get_world_state())
+        map_width = self.world_map.width
+        map_height = self.world_map.height 
+        self.robot.set_destination((map_width-1, map_height-1))
 
     def get_map(self):
         return self.world_map

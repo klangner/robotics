@@ -5,8 +5,8 @@ Created on 22-05-2013
 '''
 
 import sys, pygame
-from robotics.view import MainFrame
-from robotics.model import World
+from robotics.robot1.view import MainFrame
+from robotics.robot1.model import World
  
 
 class RobotApp():
@@ -21,7 +21,6 @@ class RobotApp():
     
     def run(self):
         self.robot = self.model.get_robot() 
-        self.robot.set_destination((31, 23))
         self.running = True
         while self.running:
             self.process_events()
