@@ -5,7 +5,7 @@ Created on 22-05-2013
 '''
 
 from robotics.tiled import tmxreader
-from robotics.utils.pathfinding import astar_path
+from random import randint
  
 
 class World():
@@ -15,9 +15,6 @@ class World():
     def load(self, map_filename):
         self.world_map = tmxreader.TileMapParser().parse_decode(map_filename)
         self.robot = Robot(self.get_world_state())
-        map_width = self.world_map.width
-        map_height = self.world_map.height 
-        self.robot.set_destination((map_width-1, map_height-1))
 
     def get_map(self):
         return self.world_map
@@ -53,33 +50,19 @@ class Robot():
     
     def __init__(self, world_state):
         self.world_state = world_state
-        self.position = (0, 0)
+        posx = randint(0, len(world_state))
+        posy = randint(0, len(world_state[0]))
+        self.position = (posx, posy)
         self.path = []
-    
-    def get_path(self):
-        return self.path
     
     def get_position(self):
         return self.position
     
-    def set_destination(self, destination):
-        self.destination = destination
-        self._update_path()
-        
-    def _update_path(self):
-        self.path = astar_path(self.world_state, self.position, self.destination)
-            
     def get_world_state(self):
         return self.world_state
             
     def move(self, dx, dy):
-        (pos_x, pos_y) = self.position
-        pos_x += dx
-        pos_y += dy
-        if self._is_valid_position(pos_x, pos_y):
-            self.position = (pos_x, pos_y)
-            self._update_path()
-            
-    def _is_valid_position(self, x, y):
-        return (x >= 0 and y >= 0 and x < len(self.world_state) and  
-                y < len(self.world_state[0]) and self.world_state[x][y] > 0)
+        (posx, posy) = self.position
+        posx = (posx+dx)%len(self.world_state)
+        posy = (posy+dy)%len(self.world_state[0])
+        self.position = (posx, posy)

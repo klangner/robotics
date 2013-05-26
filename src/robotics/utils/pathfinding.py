@@ -3,7 +3,7 @@ Created on 24-05-2013
 
 @author: Krzysztof Langner
 '''
-from robotics.slam.graph import GraphConverter
+from robotics.utils.graph import GraphConverter
 import networkx as nx;
 
 
